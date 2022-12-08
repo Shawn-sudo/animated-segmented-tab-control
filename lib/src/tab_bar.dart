@@ -457,7 +457,6 @@ class _Labels extends StatelessWidget {
                       child: Text(
                         tab.label,
                         overflow: TextOverflow.clip,
-                        maxLines: 1,
                       ),
                     ),
                   ),
