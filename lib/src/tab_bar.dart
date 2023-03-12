@@ -278,6 +278,7 @@ class _SegmentedTabControlState extends State<SegmentedTabControl>
                       callbackBuilder: _onTabTap(),
                       availableSpace: constraints.maxWidth,
                       tabs: widget.tabs,
+                      tabPadding: widget.tabPadding,
                       currentIndex: _internalIndex,
                       textStyle: textStyle.copyWith(
                         color: tabTextColor,
@@ -309,38 +310,44 @@ class _SegmentedTabControlState extends State<SegmentedTabControl>
                   ),
                 ),
                 _SqueezeAnimated(
-                  currentTilePadding: _currentTilePadding,
-                  squeezeDuration: widget.squeezeDuration,
-                  builder: (squeezePadding) => ClipPath(
-                    clipper: RRectRevealClipper(
-                      radius: widget.radius,
-                      size: Size(
-                        indicatorWidth,
-                        widget.height -
-                            widget.indicatorPadding.vertical -
-                            squeezePadding.vertical,
-                      ),
-                      offset: Offset(
-                        _xToPercentsCoefficient(_currentIndicatorAlignment) *
-                            (constraints.maxWidth - indicatorWidth),
-                        0,
-                      ),
-                    ),
-                    child: IgnorePointer(
-                      child: _Labels(
-                        radius: widget.radius,
-                        splashColor: widget.splashColor,
-                        splashHighlightColor: widget.splashHighlightColor,
-                        availableSpace: constraints.maxWidth,
-                        tabs: widget.tabs,
-                        currentIndex: _internalIndex,
-                        textStyle: textStyle.copyWith(
-                          color: selectedTabTextColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                    currentTilePadding: _currentTilePadding,
+                    squeezeDuration: widget.squeezeDuration,
+                    builder: (squeezePadding) => LayoutBuilder(
+                          builder: (context, constraints) {
+                            return ClipPath(
+                              clipper: RRectRevealClipper(
+                                radius: widget.radius,
+                                size: Size(
+                                  indicatorWidth,
+                                  constraints.maxHeight -
+                                      widget.indicatorPadding.vertical -
+                                      squeezePadding.vertical,
+                                ),
+                                offset: Offset(
+                                  _xToPercentsCoefficient(
+                                          _currentIndicatorAlignment) *
+                                      (constraints.maxWidth - indicatorWidth),
+                                  0,
+                                ),
+                              ),
+                              child: IgnorePointer(
+                                child: _Labels(
+                                  radius: widget.radius,
+                                  splashColor: widget.splashColor,
+                                  splashHighlightColor:
+                                      widget.splashHighlightColor,
+                                  availableSpace: constraints.maxWidth,
+                                  tabs: widget.tabs,
+                                  tabPadding: widget.tabPadding,
+                                  currentIndex: _internalIndex,
+                                  textStyle: textStyle.copyWith(
+                                    color: selectedTabTextColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )),
               ],
             ),
           ),
